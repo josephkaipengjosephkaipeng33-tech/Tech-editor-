@@ -3,66 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Editor</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        #videoContainer { display: flex; flex-direction: column; align-items: center; }
-        video { width: 640px; height: 360px; }
-    </style>
+    <title>Professional App Profile</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="videoContainer">
+    <nav>
+        <h1>App Name</h1>
+        <ul>
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#editor">Editor</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <section id="hero">
+        <h2>Welcome to Our Video Editor</h2>
+        <p>Create amazing videos with our fully integrated video editor.</p>
+        <button>Get Started</button>
+    </section>
+
+    <section id="features">
+        <h2>Features</h2>
+        <div class="feature-card">
+            <h3>Feature 1</h3>
+            <p>Description of feature 1.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Feature 2</h3>
+            <p>Description of feature 2.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Feature 3</h3>
+            <p>Description of feature 3.</p>
+        </div>
+    </section>
+
+    <section id="editor">
+        <h2>Integrated Video Editor</h2>
         <video id="videoPlayer" controls>
-            <source id="videoSource" src="" type="video/mp4">
+            <source src="video.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <input type="file" id="videoUpload" accept="video/mp4">
-        <div>
-            <button onclick="playVideo()">Play</button>
-            <button onclick="pauseVideo()">Pause</button>
-            <button onclick="stopVideo()">Stop</button>
-            <button onclick="rewindVideo()">Rewind</button>
-            <button onclick="forwardVideo()">Forward</button>
+        <div class="controls">
+            <button id="playBtn">Play</button>
+            <button id="pauseBtn">Pause</button>
+            <span>Volume:</span>
+            <input type="range" id="volumeSlider" value="100" max="100" />
+            <span>Speed:</span>
+            <input type="range" id="speedSlider" value="1" min="0.5" max="2" step="0.1" />
+            <span>Timeline:</span>
+            <input type="range" id="timelineSlider" value="0" />
         </div>
-        <div>
-            <label for="volumeControl">Volume:</label>
-            <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1" onchange="changeVolume(this.value)">
-        </div>
-        <div>
-            <label for="speedControl">Speed:</label>
-            <input type="range" id="speedControl" min="0.5" max="2" step="0.1" value="1" onchange="changeSpeed(this.value)">
-        </div>
-        <div>
-            <input type="range" id="timelineScrubber" value="0" onchange="scrubVideo(this.value)">
-        </div>
-    </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Your Company Name</p>
+    </footer>
+
     <script>
-        const videoPlayer = document.getElementById('videoPlayer');
-        const videoUpload = document.getElementById('videoUpload');
-        const timelineScrubber = document.getElementById('timelineScrubber');
+        const video = document.getElementById('videoPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const speedSlider = document.getElementById('speedSlider');
+        const timelineSlider = document.getElementById('timelineSlider');
 
-        videoUpload.addEventListener('change', function() {
-            const file = this.files[0];
-            const fileURL = URL.createObjectURL(file);
-            videoPlayer.src = fileURL;
-            videoPlayer.load();
+        playBtn.addEventListener('click', () => {
+            video.play();
         });
 
-        function playVideo() { videoPlayer.play(); }
-        function pauseVideo() { videoPlayer.pause(); }
-        function stopVideo() { videoPlayer.pause(); videoPlayer.currentTime = 0; }
-        function rewindVideo() { videoPlayer.currentTime = Math.max(0, videoPlayer.currentTime - 5); }
-        function forwardVideo() { videoPlayer.currentTime += 5; }
-        function changeVolume(value) { videoPlayer.volume = value; }
-        function changeSpeed(value) { videoPlayer.playbackRate = value; }
-        videoPlayer.addEventListener('timeupdate', function() {
-            const value = (videoPlayer.currentTime / videoPlayer.duration) * 100;
-            timelineScrubber.value = value;
+        pauseBtn.addEventListener('click', () => {
+            video.pause();
         });
-        function scrubVideo(value) {
-            const time = (value / 100) * videoPlayer.duration;
-            videoPlayer.currentTime = time;
-        }
+
+        volumeSlider.addEventListener('input', (event) => {
+            video.volume = event.target.value / 100;
+        });
+
+        speedSlider.addEventListener('input', (event) => {
+            video.playbackRate = event.target.value;
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+            timelineSlider.max = video.duration;
+        });
+
+        video.addEventListener('timeupdate', () => {
+            timelineSlider.value = video.currentTime;
+        });
+
+        timelineSlider.addEventListener('input', (event) => {
+            video.currentTime = event.target.value;
+        });
     </script>
 </body>
 </html>
