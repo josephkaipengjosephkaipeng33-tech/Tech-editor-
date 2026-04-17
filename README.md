@@ -1,3 +1,2 @@
 # Tech-editor-
-Welcome to my tech editor 
-hi guys how can i help you hi
+https://github.com/josephkaipengjosephkaipeng33-tech/Tech-editor-.git
